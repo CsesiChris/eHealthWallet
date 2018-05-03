@@ -3,4 +3,21 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+
+    <string name="menu_header_medical_reports">Medical Reports</string>
+
+    <string name="menu_blood_reports">Blood Reports</string>
+    <string name="menu_dermatology">Dermatology</string>
+    <string name="menu_dismissal_reports">Dismissal Reports</string>
+    <string name="menu_general_medicine">General Medicine</string>
+    <string name="menu_gynecology">Gynecology</string>
+    <string name="menu_internal_medicine">Internal Medicine</string>
+    <string name="menu_neurology">Neurology</string>
+    <string name="menu_ophtalmologist">Ophtalmologist</string>
+    <string name="menu_orthopedics">Orthopedics</string>
+    <string name="menu_prevention">Prevention</string>
+    <string name="menu_radiology">Radiology</string>
+    <string name="menu_urology">Urology</string>
+
+
 </resources>

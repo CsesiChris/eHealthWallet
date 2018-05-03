@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,12 +12,20 @@
     android:orientation="vertical"
     tools:context="com.example.androidnfc.MainActivity" >
 
+    <!-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:text="@string/app_name"
         android:textStyle="bold" />
+
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/e_health_wallet_text" />
 
     <EditText
         android:id="@+id/textout"
@@ -27,4 +37,72 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
+
+
 </LinearLayout>
+-->
+
+
+    <!-- Use DrawerLayout as root container for activity -->
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+android:id="@+id/drawer_layout"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:fitsSystemWindows="true">
+
+<!-- Layout to contain contents of main body of screen (drawer will slide over this) -->
+<FrameLayout
+    android:id="@+id/content_frame"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:src="@drawable/e_health_wallet_text"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"/>
+
+    <TextView
+        android:id="@+id/textout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="none"
+        android:singleLine="false"
+        android:layout_gravity="top|left"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="130dp"/>
+
+    <TextView
+        android:id="@+id/info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|left"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="190dp"/>
+
+</FrameLayout>
+
+
+<!-- Container for contents of drawer - use NavigationView to make configuration easier -->
+<android.support.design.widget.NavigationView
+    android:id="@+id/nav_view"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:layout_gravity="start"
+    android:fitsSystemWindows="true"
+    app:menu="@menu/drawer_view"
+    app:headerLayout="@layout/nav_header"/>
+
+</android.support.v4.widget.DrawerLayout>
+
+
+
+
+
+
+
+

@@ -30,19 +30,16 @@ import java.io.OutputStream;
 import java.util.UUID;
 
 public class MainActivity extends Activity implements
-        CreateNdefMessageCallback, OnNdefPushCompleteCallback{
+        CreateNdefMessageCallback, OnNdefPushCompleteCallback {
 
     private static final String LOG_TAG = "eH-Wallet";
 
-    TextView textInfo;
-    EditText textOut;
+    private TextView textInfo;
+    private TextView textOut;
 
-    NfcAdapter nfcAdapter;
+    private NfcAdapter nfcAdapter;
 
     private String myMacAdress;
-
-
-
 
     /**
      * Local Bluetooth adapter
@@ -80,16 +77,16 @@ public class MainActivity extends Activity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         textInfo = (TextView)findViewById(R.id.info);
-        textOut = (EditText)findViewById(R.id.textout);
+        textOut = (TextView) findViewById(R.id.textout);
 
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
         if(nfcAdapter==null){
             Toast.makeText(MainActivity.this,
                     "nfcAdapter==null, no NFC adapter exists",
                     Toast.LENGTH_LONG).show();
-        }else{
+        } else {
             Toast.makeText(MainActivity.this,
-                    "Set Callback(s)",
+                    "Ready for transfer ...",
                     Toast.LENGTH_LONG).show();
             nfcAdapter.setNdefPushMessageCallback(this, this);
             nfcAdapter.setOnNdefPushCompleteCallback(this, this);
@@ -157,7 +154,7 @@ public class MainActivity extends Activity implements
     @Override
     public void onNdefPushComplete(NfcEvent event) {
 
-        final String eventString = "onNdefPushComplete\n" + event.toString();
+        final String eventString = "Sending NFC info ...\n" + event.toString();
         runOnUiThread(new Runnable() {
 
             @Override
@@ -478,7 +475,6 @@ public class MainActivity extends Activity implements
         }
     }
 
-
     private String getFHIRmessage() {
 
         String fhirReport;
@@ -497,6 +493,4 @@ public class MainActivity extends Activity implements
 
         return fhirReport;
     }
-
-
 }
