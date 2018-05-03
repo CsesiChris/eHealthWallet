@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_blood_reports"
+            android:title="@string/menu_blood_reports" />
+        <item
+            android:id="@+id/nav_radiology"
+            android:title="@string/menu_radiology" />
+        <item
+            android:id="@+id/nav_dermatology"
+            android:title="@string/menu_dermatology" />
+        <item
+            android:id="@+id/nav_dismissal_reports"
+            android:title="@string/menu_dismissal_reports" />
+        <item
+            android:id="@+id/nav_general_medicine"
+            android:title="@string/menu_general_medicine" />
+        <item
+            android:id="@+id/nav_gynecology"
+            android:title="@string/menu_gynecology" />
+        <item
+            android:id="@+id/nav_internal_medicine"
+            android:title="@string/menu_internal_medicine" />
+        <item
+            android:id="@+id/nav_neurology"
+            android:title="@string/menu_neurology" />
+        <item
+            android:id="@+id/nav_ophtalmologist"
+            android:title="@string/menu_ophtalmologist" />
+        <item
+            android:id="@+id/nav_orthopedics"
+            android:title="@string/menu_orthopedics" />
+        <item
+            android:id="@+id/nav_prevention"
+            android:title="@string/menu_prevention" />
+        <item
+            android:id="@+id/nav_urology"
+            android:title="@string/menu_urology" />
+    </group>
+</menu>
