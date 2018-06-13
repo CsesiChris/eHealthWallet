@@ -10,6 +10,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
@@ -18,12 +20,19 @@ import android.nfc.NfcAdapter.OnNdefPushCompleteCallback;
 import android.nfc.NfcEvent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.os.Parcelable;
+import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
-import android.widget.EditText;
+import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -36,6 +45,8 @@ public class MainActivity extends Activity implements
 
     private TextView textInfo;
     private TextView textOut;
+
+    private DrawerLayout mDrawerLayout;
 
     private NfcAdapter nfcAdapter;
 
@@ -55,7 +66,7 @@ public class MainActivity extends Activity implements
 //    private AcceptThread mSecureAcceptThread;
     private AcceptThread mInsecureAcceptThread;
 
-//    private static final String NAME_SECURE = "BluetoothChatSecure";
+    private static final String NAME_SECURE = "BluetoothChatSecure";
     private static final String NAME_INSECURE = "BluetoothChatInsecure";
 
     // Unique UUID for this application
@@ -71,6 +82,10 @@ public class MainActivity extends Activity implements
     public static final int STATE_CONNECTED = 3;  // now connected to a remote device
 
 
+    public static final int MESSAGE_TOAST = 5;
+    public static final int MESSAGE_TRANSFER_INFO = 6;
+
+    public static final String INFO = "info";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +93,37 @@ public class MainActivity extends Activity implements
         setContentView(R.layout.activity_main);
         textInfo = (TextView)findViewById(R.id.info);
         textOut = (TextView) findViewById(R.id.textout);
+
+        mDrawerLayout = findViewById(R.id.drawer_layout);
+
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+                        // set item as selected to persist highlight
+                        menuItem.setChecked(true);
+                        // close drawer when item is tapped
+                        mDrawerLayout.closeDrawers();
+
+                        // Add code here to update the UI based on the item selected
+                        // For example, swap UI fragments here
+
+                        Toast.makeText(MainActivity.this,
+                                menuItem.getTitle(),
+                                Toast.LENGTH_LONG).show();
+
+                        return true;
+                    }
+                });
+
+
+
+
+
+
+
+
 
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
         if(nfcAdapter==null){
@@ -161,7 +207,7 @@ public class MainActivity extends Activity implements
             public void run() {
                 Toast.makeText(getApplicationContext(),
                         eventString,
-                        Toast.LENGTH_LONG).show();
+                        Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -240,8 +286,9 @@ public class MainActivity extends Activity implements
      */
     public synchronized void connected(BluetoothSocket socket, BluetoothDevice
             device, final String socketType) {
-        Log.d(LOG_TAG, "connected, Socket Type:" + socketType);
 
+        Log.d(LOG_TAG, "connected, Socket Type:" + socketType);
+        transferInfo("Start data transfer ...");
 //        // Cancel the thread that completed the connection
 //        if (mConnectThread != null) {
 //            mConnectThread.cancel();
@@ -281,6 +328,30 @@ public class MainActivity extends Activity implements
         {
             Thread.sleep(500);
             write(getFHIRmessage().getBytes());
+
+            Thread.sleep(300);
+            //write(getCT());
+
+            try {
+                Resources res = getResources();
+                InputStream is = res.openRawResource(R.raw.ct_head_neck);
+
+                int nRead;
+                byte[] data = new byte[8024];
+
+                while ((nRead = is.read(data, 0, data.length)) != -1) {
+                    write(data);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
+            Thread.sleep(300);
+            write(new String("###END###").getBytes());
+
+            transferInfo("Sending Health record finished!");
+
         }
         catch(InterruptedException ex)
         {
@@ -299,7 +370,7 @@ public class MainActivity extends Activity implements
         // Create temporary object
         ConnectedThread r;
 
-        Log.i(LOG_TAG, "In the write block");
+        Log.i(LOG_TAG, "In the write block:\n" + out.length);
 
         // Synchronize a copy of the ConnectedThread
         synchronized (this) {
@@ -309,6 +380,42 @@ public class MainActivity extends Activity implements
         // Perform the write unsynchronized
         r.write(out);
     }
+
+    private void transferInfo(String str) {
+        Message msg = mHandler.obtainMessage(MESSAGE_TRANSFER_INFO);
+        Bundle bundle = new Bundle();
+        bundle.putString(INFO, str);
+        msg.setData(bundle);
+        mHandler.sendMessage(msg);
+    }
+
+    /**
+     * The Handler that gets information back from the BluetoothChatService
+     */
+    private final Handler mHandler = new Handler() {
+
+        Activity a = getParent();
+
+        @Override
+        public void handleMessage(Message msg) {
+
+            // Log.d(LOG_TAG, "handleMessage:" + msg.what);
+
+
+            switch (msg.what) {
+
+                case MESSAGE_TRANSFER_INFO:
+                    textInfo.append("\n" + msg.getData().getString(INFO));
+                    break;
+
+                case MESSAGE_TOAST:
+
+                    Toast.makeText(a, msg.getData().getString("TOAST"),
+                            Toast.LENGTH_SHORT).show();
+                    break;
+            }
+        }
+    };
 
 
 
@@ -328,13 +435,13 @@ public class MainActivity extends Activity implements
 
             // Create a new listening server socket
             try {
-//                if (secure) {
-//                    tmp = mBluetoothAdapter.listenUsingRfcommWithServiceRecord(NAME_SECURE,
-//                            MY_UUID_SECURE);
-//                } else {
+                if (secure) {
+                    tmp = mBluetoothAdapter.listenUsingRfcommWithServiceRecord(NAME_SECURE,
+                            MY_UUID_SECURE);
+                } else {
                     tmp = mBluetoothAdapter.listenUsingInsecureRfcommWithServiceRecord(
                             NAME_INSECURE, MY_UUID_INSECURE);
-//                }
+                }
             } catch (IOException e) {
                 Log.e(LOG_TAG, "Socket Type: " + mSocketType + "listen() failed", e);
             }
@@ -454,9 +561,10 @@ public class MainActivity extends Activity implements
         public void write(byte[] buffer) {
             try {
 
-                Log.i(LOG_TAG, "Write to stream: " + new String(buffer));
+                //Log.i(LOG_TAG, "Write to stream: " + new String(buffer));
 
                 mmOutStream.write(buffer);
+                mmOutStream.flush();
 
                 // Share the sent message back to the UI Activity
 //                mHandler.obtainMessage(MESSAGE_WRITE, -1, -1, buffer)
@@ -465,6 +573,7 @@ public class MainActivity extends Activity implements
                 Log.e(LOG_TAG, "Exception during write", e);
             }
         }
+
 
         public void cancel() {
             try {
@@ -492,5 +601,28 @@ public class MainActivity extends Activity implements
         }
 
         return fhirReport;
+    }
+
+    private byte[] getCT() {
+
+        try {
+            Resources res = getResources();
+            InputStream in_s = res.openRawResource(R.raw.ct_head_neck);
+//
+            byte[] ctByteArray = new byte[in_s.available()];
+            in_s.read(ctByteArray);
+//            return b;
+
+//            Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.raw.ct_head_neck);
+//            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+//            bmp.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+//            byte[] ctByteArray = stream.toByteArray();
+
+            Log.d(LOG_TAG, "CT bytes: " + ctByteArray.length);
+            return ctByteArray;
+
+        } catch (Exception e) {
+            return new  byte[0];
+        }
     }
 }
