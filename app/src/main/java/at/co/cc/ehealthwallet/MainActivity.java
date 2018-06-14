@@ -27,6 +27,9 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,6 +48,10 @@ public class MainActivity extends Activity implements
 
     private TextView textInfo;
     private TextView textOut;
+
+    private TextView labelReport;
+    private LinearLayout tableReport;
+    private TextView exam2;
 
     private DrawerLayout mDrawerLayout;
 
@@ -93,6 +100,12 @@ public class MainActivity extends Activity implements
         setContentView(R.layout.activity_main);
         textInfo = (TextView)findViewById(R.id.info);
         textOut = (TextView) findViewById(R.id.textout);
+        labelReport = (TextView) findViewById(R.id.report_headline);
+        labelReport.setVisibility(TextView.INVISIBLE);
+        tableReport = (LinearLayout) findViewById(R.id.report_table);
+        tableReport.setVisibility(TextView.INVISIBLE);
+        exam2 = (TextView) findViewById(R.id.tableRowExam2);
+
 
         mDrawerLayout = findViewById(R.id.drawer_layout);
 
@@ -113,13 +126,25 @@ public class MainActivity extends Activity implements
                                 menuItem.getTitle(),
                                 Toast.LENGTH_LONG).show();
 
+                        labelReport.setVisibility(TextView.VISIBLE);
+                        tableReport.setVisibility(LinearLayout.VISIBLE);
                         return true;
                     }
                 });
 
 
 
+        exam2.setOnClickListener(new View.OnClickListener() {
 
+            @Override
+            public void onClick(View view)
+            {
+                Toast.makeText(MainActivity.this,
+                        "DETAIL",
+                        Toast.LENGTH_LONG).show();
+            }
+
+        });
 
 
 

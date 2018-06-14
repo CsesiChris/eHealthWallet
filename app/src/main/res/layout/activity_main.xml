@@ -72,9 +72,8 @@ android:fitsSystemWindows="true">
         android:layout_height="wrap_content"
         android:inputType="none"
         android:singleLine="false"
-        android:layout_gravity="top|left"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="130dp"/>
+        android:layout_gravity="top|center"
+        android:layout_marginTop="570dp"/>
 
     <TextView
         android:id="@+id/info"
@@ -83,6 +82,189 @@ android:fitsSystemWindows="true">
         android:layout_gravity="top|left"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="190dp"/>
+
+    <TextView
+        android:id="@+id/report_headline"
+        android:layout_width="match_parent"
+        android:layout_height="66dp"
+        android:layout_marginTop="160dp"
+        android:ems="60"
+        android:textSize="35dp"
+        android:gravity="center_horizontal"
+        android:textColor="@color/colorBlack"
+        android:text="@string/table_headline_radiology" />
+
+    <LinearLayout
+        android:id="@+id/report_table"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="220dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/tableRowHeader"
+            android:layout_width="match_parent"
+            android:layout_height="60px"
+            android:layout_margin="5dp"
+            android:background="@color/colorGrey"
+            android:gravity="left"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="100px"
+                android:layout_height="wrap_content"
+                android:text=" " />
+
+            <TextView
+                android:layout_width="340px"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:text="@string/table_date"
+                android:textColor="@color/colorBlack" />
+
+            <TextView
+                android:layout_width="300px"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:text="@string/table_operator"
+                android:textColor="@color/colorBlack" />
+
+            <TextView
+                android:layout_width="300px"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:text="@string/table_examination"
+                android:textColor="@color/colorBlack" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/tableRow1"
+            android:layout_width="match_parent"
+            android:layout_height="60px"
+            android:layout_margin="5dp"
+            android:gravity="left"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/checkBox"
+                android:layout_width="120px"
+                android:layout_height="wrap_content"
+                android:text="@string/table_date_ex1"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:layout_width="300px"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:text="@string/table_operator_ex1"
+                android:textColor="@color/colorBlack" />
+
+            <TextView
+                android:layout_width="300px"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:text="@string/table_examination_ex1"
+                android:textColor="@color/colorBlack"
+                android:autoLink="web"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/tableRow2"
+            android:layout_width="match_parent"
+            android:layout_height="60px"
+            android:layout_margin="5dp"
+            android:gravity="left"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/checkBox2"
+                android:layout_width="120px"
+                android:layout_height="wrap_content"
+                android:text="@string/table_date_ex2"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:layout_width="300px"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:text="@string/table_operator_ex2"
+                android:textColor="@color/colorBlack" />
+
+            <TextView
+                android:id="@+id/tableRowExam2"
+                android:layout_width="300px"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:text="@string/table_examination_ex2"
+                android:textColor="@color/colorBlack"
+                android:autoLink="web" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/tableRow3"
+            android:layout_width="match_parent"
+            android:layout_height="60px"
+            android:layout_margin="5dp"
+            android:gravity="left"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/checkBox3"
+                android:layout_width="120px"
+                android:layout_height="wrap_content"
+                android:text="@string/table_date_ex3"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:layout_width="300px"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:text="@string/table_operator_ex3"
+                android:textColor="@color/colorBlack" />
+
+            <TextView
+                android:layout_width="300px"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:text="@string/table_examination_ex3"
+                android:textColor="@color/colorBlack"
+                android:autoLink="web"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/tableRow4"
+            android:layout_width="match_parent"
+            android:layout_height="60px"
+            android:layout_margin="5dp"
+            android:gravity="left"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/checkBox4"
+                android:layout_width="120px"
+                android:layout_height="wrap_content"
+                android:text="@string/table_date_ex4"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:layout_width="300px"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:text="@string/table_operator_ex4"
+                android:textColor="@color/colorBlack" />
+
+            <TextView
+                android:layout_width="300px"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:text="@string/table_examination_ex4"
+                android:textColor="@color/colorBlack"
+                android:autoLink="web"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+
 
 </FrameLayout>
 

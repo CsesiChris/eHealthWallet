@@ -19,5 +19,26 @@
     <string name="menu_radiology">Radiology</string>
     <string name="menu_urology">Urology</string>
 
+    <string name="table_headline_radiology">Radiology Reports</string>
+
+    <string name="table_date">Date</string>
+    <string name="table_operator">Operator</string>
+    <string name="table_examination">Examination</string>
+
+    <string name="table_date_ex1">2018-06-14</string>
+    <string name="table_operator_ex1">DonG Clinix</string>
+    <string name="table_examination_ex1">CR Knee left</string>
+
+    <string name="table_date_ex2">2018-06-15</string>
+    <string name="table_operator_ex2">DonG Clinix</string>
+    <string name="table_examination_ex2">MRT Knee left</string>
+
+    <string name="table_date_ex3">2018-06-20</string>
+    <string name="table_operator_ex3">Dr. Who</string>
+    <string name="table_examination_ex3">CR Femur left</string>
+
+    <string name="table_date_ex4">2018-06-20</string>
+    <string name="table_operator_ex4">DonG Clinix</string>
+    <string name="table_examination_ex4">CT Knee left</string>
 
 </resources>
