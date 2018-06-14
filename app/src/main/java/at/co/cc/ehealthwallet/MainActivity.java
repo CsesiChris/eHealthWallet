@@ -52,6 +52,7 @@ public class MainActivity extends Activity implements
     private TextView textInfo;
     private TextView textOut;
 
+    /** Report List */
     private TextView labelReport;
     private LinearLayout tableReport;
     private TextView exam2;
@@ -69,15 +70,12 @@ public class MainActivity extends Activity implements
 
     private String myMacAdress;
 
-    /**
-     * Local Bluetooth adapter
-     */
+    /** Local Bluetooth adapter */
     private BluetoothAdapter mBluetoothAdapter = null;
 
     private int mState;
     private int mNewState;
 
- //   private ConnectThread mConnectThread;
     private ConnectedThread mConnectedThread;
 
 //    private AcceptThread mSecureAcceptThread;
@@ -110,13 +108,15 @@ public class MainActivity extends Activity implements
         setContentView(R.layout.activity_main);
         textInfo = (TextView)findViewById(R.id.info);
         textOut = (TextView) findViewById(R.id.textout);
+
+        /** Report list view */
         labelReport = (TextView) findViewById(R.id.report_headline);
         labelReport.setVisibility(TextView.INVISIBLE);
         tableReport = (LinearLayout) findViewById(R.id.report_table);
         tableReport.setVisibility(TextView.INVISIBLE);
         exam2 = (TextView) findViewById(R.id.tableRowExam2);
 
-        /** Detail view */
+        /** Report detail view */
         detailHeader1 = (TextView) findViewById(R.id.report_detail_headline1);
         detailHeader1.setVisibility(TextView.INVISIBLE);
         detailHeader2 = (TextView) findViewById(R.id.report_detail_headline2);
@@ -252,11 +252,13 @@ public class MainActivity extends Activity implements
             startActivity(discoverableIntent);
         }
 
-        // Start the thread to listen on a BluetoothServerSocket
-//        if (mSecureAcceptThread == null) {
-//            mSecureAcceptThread = new AcceptThread(true);
-//            mSecureAcceptThread.start();
-//        }
+        /**
+        Start the thread to listen on a BluetoothServerSocket
+        if (mSecureAcceptThread == null) {
+            mSecureAcceptThread = new AcceptThread(true);
+            mSecureAcceptThread.start();
+        } */
+
         if (mInsecureAcceptThread == null) {
             mInsecureAcceptThread = new AcceptThread(false);
             mInsecureAcceptThread.start();
@@ -319,36 +321,6 @@ public class MainActivity extends Activity implements
         return result;
     }
 
-//    /**
-//     * Start the ConnectThread to initiate a connection to a remote device.
-//     *
-//     * @param device The BluetoothDevice to connect
-//     * @param secure Socket Security type - Secure (true) , Insecure (false)
-//     */
-//    public synchronized void connect(BluetoothDevice device, boolean secure) {
-//        Log.d(TAG, "connect to: " + device);
-//
-//        // Cancel any thread attempting to make a connection
-//        if (mState == STATE_CONNECTING) {
-//            if (mConnectThread != null) {
-//                mConnectThread.cancel();
-//                mConnectThread = null;
-//            }
-//        }
-//
-//        // Cancel any thread currently running a connection
-//        if (mConnectedThread != null) {
-//            mConnectedThread.cancel();
-//            mConnectedThread = null;
-//        }
-//
-//        // Start the thread to connect with the given device
-//        mConnectThread = new ConnectThread(device, secure);
-//        mConnectThread.start();
-//        // Update UI title
-////        updateUserInterfaceTitle();
-//    }
-
 
     /**
      * Start the ConnectedThread to begin managing a Bluetooth connection
@@ -361,11 +333,6 @@ public class MainActivity extends Activity implements
 
         Log.d(LOG_TAG, "connected, Socket Type:" + socketType);
         transferInfo("Start data transfer ...");
-//        // Cancel the thread that completed the connection
-//        if (mConnectThread != null) {
-//            mConnectThread.cancel();
-//            mConnectThread = null;
-//        }
 
         // Cancel any thread currently running a connection
         if (mConnectedThread != null) {
@@ -373,11 +340,13 @@ public class MainActivity extends Activity implements
             mConnectedThread = null;
         }
 
-        // Cancel the accept thread because we only want to connect to one device
-//        if (mSecureAcceptThread != null) {
-//            mSecureAcceptThread.cancel();
-//            mSecureAcceptThread = null;
-//        }
+        /*
+        Cancel the accept thread because we only want to connect to one device
+        if (mSecureAcceptThread != null) {
+            mSecureAcceptThread.cancel();
+            mSecureAcceptThread = null;
+        } */
+
         if (mInsecureAcceptThread != null) {
             mInsecureAcceptThread.cancel();
             mInsecureAcceptThread = null;
@@ -386,15 +355,6 @@ public class MainActivity extends Activity implements
         // Start the thread to manage the connection and perform transmissions
         mConnectedThread = new ConnectedThread(socket, socketType);
         mConnectedThread.start();
-
-//        // Send the name of the connected device back to the UI Activity
-//        Message msg = mHandler.obtainMessage(Constants.MESSAGE_DEVICE_NAME);
-//        Bundle bundle = new Bundle();
-//        bundle.putString(Constants.DEVICE_NAME, device.getName());
-//        msg.setData(bundle);
-//        mHandler.sendMessage(msg);
-//        // Update UI title
-//        updateUserInterfaceTitle();
 
         try
         {
@@ -418,12 +378,10 @@ public class MainActivity extends Activity implements
                 e.printStackTrace();
             }
 
-
             Thread.sleep(300);
             write(new String("###END###").getBytes());
 
             transferInfo("Sending Health record finished!");
-
         }
         catch(InterruptedException ex)
         {
@@ -472,7 +430,6 @@ public class MainActivity extends Activity implements
         public void handleMessage(Message msg) {
 
             // Log.d(LOG_TAG, "handleMessage:" + msg.what);
-
 
             switch (msg.what) {
 
@@ -614,12 +571,8 @@ public class MainActivity extends Activity implements
                     // Read from the InputStream
                     bytes = mmInStream.read(buffer);
 
-                    // Send the obtained bytes to the UI Activity
-//                    mHandler.obtainMessage(Constants.MESSAGE_READ, bytes, -1, buffer)
-//                            .sendToTarget();
                 } catch (IOException e) {
                     Log.e(LOG_TAG, "disconnected", e);
-//                    connectionLost();
                     break;
                 }
             }
@@ -633,14 +586,9 @@ public class MainActivity extends Activity implements
         public void write(byte[] buffer) {
             try {
 
-                //Log.i(LOG_TAG, "Write to stream: " + new String(buffer));
-
                 mmOutStream.write(buffer);
                 mmOutStream.flush();
 
-                // Share the sent message back to the UI Activity
-//                mHandler.obtainMessage(MESSAGE_WRITE, -1, -1, buffer)
-//                        .sendToTarget();
             } catch (IOException e) {
                 Log.e(LOG_TAG, "Exception during write", e);
             }
@@ -680,15 +628,9 @@ public class MainActivity extends Activity implements
         try {
             Resources res = getResources();
             InputStream in_s = res.openRawResource(R.raw.ct_head_neck);
-//
+
             byte[] ctByteArray = new byte[in_s.available()];
             in_s.read(ctByteArray);
-//            return b;
-
-//            Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.raw.ct_head_neck);
-//            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-//            bmp.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-//            byte[] ctByteArray = stream.toByteArray();
 
             Log.d(LOG_TAG, "CT bytes: " + ctByteArray.length);
             return ctByteArray;
