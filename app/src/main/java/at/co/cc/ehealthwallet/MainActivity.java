@@ -25,9 +25,12 @@ import android.os.Message;
 import android.os.Parcelable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
+import android.text.Html;
+import android.text.Spanned;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TextView;
@@ -52,6 +55,13 @@ public class MainActivity extends Activity implements
     private TextView labelReport;
     private LinearLayout tableReport;
     private TextView exam2;
+
+    /** Report Detail*/
+    private TextView detailHeader1;
+    private TextView detailHeader2;
+    private LinearLayout detailsGrid;
+    private TextView detailsText;
+    private ImageView backButton;
 
     private DrawerLayout mDrawerLayout;
 
@@ -106,6 +116,20 @@ public class MainActivity extends Activity implements
         tableReport.setVisibility(TextView.INVISIBLE);
         exam2 = (TextView) findViewById(R.id.tableRowExam2);
 
+        /** Detail view */
+        detailHeader1 = (TextView) findViewById(R.id.report_detail_headline1);
+        detailHeader1.setVisibility(TextView.INVISIBLE);
+        detailHeader2 = (TextView) findViewById(R.id.report_detail_headline2);
+        detailHeader2.setVisibility(TextView.INVISIBLE);
+        detailsGrid  = (LinearLayout) findViewById(R.id.detailsGrid);
+        detailsGrid.setVisibility(TextView.INVISIBLE);
+        detailsText = (TextView) findViewById(R.id.detailsText);
+
+        Spanned sp = Html.fromHtml(getString(R.string.some_text));
+        detailsText.setText(sp);
+
+        backButton = (ImageView) findViewById(R.id.back_icon);
+        backButton.setVisibility(TextView.INVISIBLE);
 
         mDrawerLayout = findViewById(R.id.drawer_layout);
 
@@ -128,27 +152,50 @@ public class MainActivity extends Activity implements
 
                         labelReport.setVisibility(TextView.VISIBLE);
                         tableReport.setVisibility(LinearLayout.VISIBLE);
+
+                        /** hide report detail */
+                        detailHeader1.setVisibility(TextView.INVISIBLE);
+                        detailHeader2.setVisibility(TextView.INVISIBLE);
+                        detailsGrid.setVisibility(TextView.INVISIBLE);
+                        backButton.setVisibility(TextView.INVISIBLE);
+
                         return true;
                     }
                 });
-
-
 
         exam2.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view)
             {
-                Toast.makeText(MainActivity.this,
-                        "DETAIL",
-                        Toast.LENGTH_LONG).show();
-            }
+                /** hide report overview */
+                labelReport.setVisibility(TextView.INVISIBLE);
+                tableReport.setVisibility(LinearLayout.INVISIBLE);
 
+                /** display report detail */
+                detailHeader1.setVisibility(TextView.VISIBLE);
+                detailHeader2.setVisibility(TextView.VISIBLE);
+                detailsGrid.setVisibility(TextView.VISIBLE);
+                backButton.setVisibility(TextView.VISIBLE);
+            }
         });
 
+        backButton.setOnClickListener(new View.OnClickListener() {
 
+            @Override
+            public void onClick(View view)
+            {
+                /** display report overview */
+                labelReport.setVisibility(TextView.VISIBLE);
+                tableReport.setVisibility(LinearLayout.VISIBLE);
 
-
+                /** hide report detail */
+                detailHeader1.setVisibility(TextView.INVISIBLE);
+                detailHeader2.setVisibility(TextView.INVISIBLE);
+                detailsGrid.setVisibility(TextView.INVISIBLE);
+                backButton.setVisibility(TextView.INVISIBLE);
+            }
+        });
 
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
         if(nfcAdapter==null){
