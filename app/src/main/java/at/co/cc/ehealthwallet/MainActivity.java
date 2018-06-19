@@ -49,6 +49,7 @@ public class MainActivity extends Activity implements
 
     private static final String LOG_TAG = "eH-Wallet";
 
+    private ImageView dashboard;
     private TextView textInfo;
     private TextView textOut;
 
@@ -108,6 +109,7 @@ public class MainActivity extends Activity implements
         setContentView(R.layout.activity_main);
         textInfo = (TextView)findViewById(R.id.info);
         textOut = (TextView) findViewById(R.id.textout);
+        dashboard = (ImageView) findViewById(R.id.navigation_dashboard);
 
         /** Report list view */
         labelReport = (TextView) findViewById(R.id.report_headline);
@@ -152,6 +154,9 @@ public class MainActivity extends Activity implements
 
                         labelReport.setVisibility(TextView.VISIBLE);
                         tableReport.setVisibility(LinearLayout.VISIBLE);
+
+                        /** hide dashboard */
+                        dashboard.setVisibility(ImageView.INVISIBLE);
 
                         /** hide report detail */
                         detailHeader1.setVisibility(TextView.INVISIBLE);
@@ -366,7 +371,7 @@ public class MainActivity extends Activity implements
 
             try {
                 Resources res = getResources();
-                InputStream is = res.openRawResource(R.raw.ct_head_neck);
+                InputStream is = res.openRawResource(R.raw.radiology_hand);
 
                 int nRead;
                 byte[] data = new byte[8024];
@@ -627,7 +632,7 @@ public class MainActivity extends Activity implements
 
         try {
             Resources res = getResources();
-            InputStream in_s = res.openRawResource(R.raw.ct_head_neck);
+            InputStream in_s = res.openRawResource(R.raw.radiology_hand);
 
             byte[] ctByteArray = new byte[in_s.available()];
             in_s.read(ctByteArray);

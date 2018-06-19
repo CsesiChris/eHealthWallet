@@ -31,16 +31,16 @@
 
     <string name="table_date_ex2">2018-06-15</string>
     <string name="table_operator_ex2">DonG Clinix</string>
-    <string name="table_examination_ex2">MRT Knee left</string>
+    <string name="table_examination_ex2">CR Hand right</string>
 
     <string name="table_date_ex3">2018-06-20</string>
     <string name="table_operator_ex3">Dr. Who</string>
-    <string name="table_examination_ex3">CR Femur left</string>
+    <string name="table_examination_ex3">MRI Hand right</string>
 
     <string name="table_date_ex4">2018-06-20</string>
     <string name="table_operator_ex4">DonG Clinix</string>
     <string name="table_examination_ex4">CT Knee left</string>
 
-    <string name="some_text"><![CDATA[<p><b>ImagingStudy:</b><br> HEAD and NECK CT DICOM imaging study</p><p><b>Conclusion:</b><BR> CT brains: large tumor sphenoid/clivus.</p><p><b>Coded Diagnosis:</b></br> Malignant tumor of craniopharyngeal duct</p>]]></string>
+    <string name="some_text"><![CDATA[<p><b>ImagingStudy:</b><br> Hand right CR DICOM imaging study</p><p><b>Conclusion:</b><BR>At status post trauma, two fractures of the middle phalanx of dig V can be found...</p><p><b>Coded Diagnosis:</b><BR>Fractured phalanx of dig V as mentioned above</p>]]></string>
 
 </resources>

@@ -22,6 +22,15 @@ android:fitsSystemWindows="true">
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"/>
 
+    <ImageView
+        android:id="@+id/navigation_dashboard"
+        android:layout_width="800px"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:layout_marginLeft="42dp"
+        android:gravity="center_vertical"
+        android:src="@drawable/dashboard" />
+
     <TextView
         android:id="@+id/textout"
         android:layout_width="wrap_content"
@@ -240,22 +249,22 @@ android:fitsSystemWindows="true">
         android:textSize="35dp"
         android:gravity="center_horizontal"
         android:textColor="@color/colorBlack"
-        android:text="@string/table_examination_ex3" />
+        android:text="@string/table_examination_ex2" />
 
 
     <LinearLayout
         android:id="@+id/detailsGrid"
         android:layout_width="match_parent"
-        android:layout_height="600px"
+        android:layout_height="700px"
         android:layout_marginTop="600px"
         android:orientation="horizontal">
 
         <ImageView
             android:layout_width="600px"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20px"
+            android:layout_marginLeft="10px"
             android:gravity="left"
-            android:src="@drawable/ct_head_neck" />
+            android:src="@drawable/cr_hand_right" />
 
         <TextView
             android:id="@+id/detailsText"
@@ -276,8 +285,8 @@ android:fitsSystemWindows="true">
         android:visibility="visible"
         android:gravity="center|center_horizontal"
         android:src="@drawable/direction_back"
-        android:scaleX="2"
-        android:scaleY="2"
+        android:scaleX="1.5"
+        android:scaleY="1.5"
         android:autoLink="web"/>
 
 
