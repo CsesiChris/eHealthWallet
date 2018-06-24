@@ -410,9 +410,8 @@ public class MainActivity extends Activity implements
 
             **/
 
-
+            Thread.sleep(300);
             write(new String(STREAM_STOP).getBytes());
-
             transferInfo("Sending Health record finished!");
         }
         catch(InterruptedException ex)
