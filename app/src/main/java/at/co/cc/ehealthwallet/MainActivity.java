@@ -36,6 +36,8 @@ import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import net.vidageek.mirror.dsl.Mirror;
+
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
@@ -50,7 +52,7 @@ public class MainActivity extends Activity implements
     private static final String LOG_TAG = "eH-Wallet";
 
     private ImageView dashboard;
-    private TextView textInfo;
+    //private TextView textInfo;
     private TextView textOut;
 
     /** Report List */
@@ -103,11 +105,13 @@ public class MainActivity extends Activity implements
 
     public static final String INFO = "info";
 
+    public static final String STREAM_STOP = "###END###";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        textInfo = (TextView)findViewById(R.id.info);
+        //textInfo = (TextView)findViewById(R.id.info);
         textOut = (TextView) findViewById(R.id.textout);
         dashboard = (ImageView) findViewById(R.id.navigation_dashboard);
 
@@ -237,7 +241,7 @@ public class MainActivity extends Activity implements
             NdefRecord[] inNdefRecords = inNdefMessage.getRecords();
             NdefRecord NdefRecord_0 = inNdefRecords[0];
             String inMsg = new String(NdefRecord_0.getPayload());
-            textInfo.setText(inMsg);
+            textOut.setText(inMsg);
         }
 
         // Get local Bluetooth adapter
@@ -307,8 +311,9 @@ public class MainActivity extends Activity implements
         return ndefMessageout;
     }
 
-    private String getBluetoothMac(final Context context) {
+    private static String getBluetoothMac(final Context context) {
 
+        /** This way was possible before new Android ORIO Update restricted Blurtooth access
         String result = null;
         if (context.checkCallingOrSelfPermission(Manifest.permission.BLUETOOTH)
                 == PackageManager.PERMISSION_GRANTED) {
@@ -323,7 +328,23 @@ public class MainActivity extends Activity implements
                 result = bta != null ? bta.getAddress() : "";
             }
         }
+
         return result;
+        **/
+
+        BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        Object bluetoothManagerService = new Mirror().on(bluetoothAdapter).get().field("mService");
+        if (bluetoothManagerService == null) {
+            Log.w(LOG_TAG, "couldn't find bluetoothManagerService");
+            return null;
+        }
+        Object address = new Mirror().on(bluetoothManagerService).invoke().method("getAddress").withoutArgs();
+        if (address != null && address instanceof String) {
+            Log.w(LOG_TAG, "using reflection to get the BT MAC address: " + address);
+            return (String) address;
+        } else {
+            return null;
+        }
     }
 
 
@@ -363,11 +384,13 @@ public class MainActivity extends Activity implements
 
         try
         {
-            Thread.sleep(500);
+            Thread.sleep(100);
             write(getFHIRmessage().getBytes());
 
+            /**
+             * Writing the image data is in dummy mode :-)
             Thread.sleep(300);
-            //write(getCT());
+            write(getCT());
 
             try {
                 Resources res = getResources();
@@ -383,8 +406,12 @@ public class MainActivity extends Activity implements
                 e.printStackTrace();
             }
 
-            Thread.sleep(300);
-            write(new String("###END###").getBytes());
+             //Thread.sleep(300);
+
+            **/
+
+
+            write(new String(STREAM_STOP).getBytes());
 
             transferInfo("Sending Health record finished!");
         }
@@ -411,9 +438,11 @@ public class MainActivity extends Activity implements
         synchronized (this) {
             if (mState != STATE_CONNECTED) return;
             r = mConnectedThread;
+
+            // Perform the write unsynchronized
+            r.write(out);
         }
-        // Perform the write unsynchronized
-        r.write(out);
+
     }
 
     private void transferInfo(String str) {
@@ -439,7 +468,7 @@ public class MainActivity extends Activity implements
             switch (msg.what) {
 
                 case MESSAGE_TRANSFER_INFO:
-                    textInfo.append("\n" + msg.getData().getString(INFO));
+                    textOut.setText(msg.getData().getString(INFO));
                     break;
 
                 case MESSAGE_TOAST:
@@ -567,7 +596,7 @@ public class MainActivity extends Activity implements
 
         public void run() {
             Log.i(LOG_TAG, "BEGIN mConnectedThread");
-            byte[] buffer = new byte[1024];
+            byte[] buffer = new byte[8024];
             int bytes;
 
             // Keep listening to the InputStream while connected
