@@ -27,7 +27,7 @@ android:fitsSystemWindows="true">
         android:layout_width="800px"
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
-        android:layout_marginLeft="42dp"
+        android:layout_marginLeft="50dp"
         android:gravity="center_vertical"
         android:src="@drawable/dashboard" />
 
@@ -281,7 +281,7 @@ android:fitsSystemWindows="true">
         android:id="@+id/back_icon"
         android:layout_width="match_parent"
         android:layout_height="80px"
-        android:layout_marginTop="500dp"
+        android:layout_marginTop="522dp"
         android:visibility="visible"
         android:gravity="center|center_horizontal"
         android:src="@drawable/direction_back"
